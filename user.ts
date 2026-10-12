@@ -1,4 +1,4 @@
-class user {
+class User {
     constructor(public email: string, public password: string, public age: number) { }
 
     isEligible(): boolean {
@@ -15,14 +15,14 @@ class user {
 
 }
 
-const users: user[] = [
-    new user("test@gmail.com", "Password26", 50),
-    new user("test", "pass", 15),
-    new user("test2@gmail.com", "pass12345", 20),
-    new user("test111", "pass123123", 40)
+const users: User[] = [
+    new User("test@gmail.com", "Password26", 50),
+    new User("test", "pass", 15),
+    new User("test2@gmail.com", "pass12345", 20),
+    new User("test111", "pass123123", 40)
 ];
 
-for (const user of users) {
-    console.log(user.getSummary());
+for (const User of users) {
+    console.log(User.getSummary());
 }
 
