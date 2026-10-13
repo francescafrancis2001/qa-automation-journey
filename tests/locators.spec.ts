@@ -12,6 +12,6 @@ test('login and add item to cart', async ({ page }) => {
     await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
     await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
 
-    // await page.locator('[data-test="add-to-cart-sauce-labs-bike-light"]').click();
-    // await expect(page.locator('[data-test="add-to-cart-sauce-labs-bike-light"]')).toHaveText('2');
+    await page.locator('[data-test="add-to-cart-sauce-labs-bike-light"]').click();
+    await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('2');
 });
