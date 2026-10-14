@@ -14,4 +14,7 @@ test('login and add item to cart', async ({ page }) => {
 
     await page.locator('[data-test="add-to-cart-sauce-labs-bike-light"]').click();
     await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('2');
+    
+    await page.getByRole('combobox', { name: 'Sort products' }).selectOption('Price (low to high)');
+
 });
