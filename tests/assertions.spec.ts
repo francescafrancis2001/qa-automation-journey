@@ -25,10 +25,10 @@ test('wrong password shows error', async ({ page }) => {
 
 
 test('Add 2 items to cart and Check the counting number', async ({ page }) => {
-    await page.goto('https://www.saucedemo.com/');
-    await page.locator('[data-test="username"]').fill('standard_user');
-    await page.locator('[data-test="password"]').fill('secret_sauce');
-    await page.locator('[data-test="login-button"]').click();
+    await page.goto('https://www.saucedemo.com');
+    await page.getByPlaceholder('Username').fill('standard_user');
+    await page.getByPlaceholder('Password').fill('secret_sauce');
+    await page.getByRole('button', { name: 'Login' }).click();
 
 
     await expect(page).toHaveURL(/inventory/);
@@ -48,10 +48,10 @@ test('Add 2 items to cart and Check the counting number', async ({ page }) => {
 
 
 test('add 3 items and see them in the cart', async ({ page }) => {
-    await page.goto('https://www.saucedemo.com/');
-    await page.locator('[data-test="username"]').fill('standard_user');
-    await page.locator('[data-test="password"]').fill('secret_sauce');
-    await page.locator('[data-test="login-button"]').click();
+    await page.goto('https://www.saucedemo.com');
+    await page.getByPlaceholder('Username').fill('standard_user');
+    await page.getByPlaceholder('Password').fill('secret_sauce');
+    await page.getByRole('button', { name: 'Login' }).click();
     await expect(page).toHaveURL(/inventory/);
 
     await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
