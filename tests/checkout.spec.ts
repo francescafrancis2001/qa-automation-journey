@@ -55,6 +55,7 @@ test('complete a purchase', async ({ page }) => {
 
     await page.getByRole('button', { name: 'continue' }).click();
     await expect(page).toHaveURL(/checkout-step-two/);
+    await expect(page.locator('[data-test="inventory-item"]')).toHaveCount(2);
 
 
     // click Finish, assert the URL contains 'checkout-complete'
@@ -84,6 +85,7 @@ test('complete a purchase (another written type)', async ({ page }) => {
 
     await page.getByRole('button', { name: 'continue' }).click();
     await expect(page).toHaveURL(/checkout-step-two/);
+    await expect(page.locator('[data-test="inventory-item"]')).toHaveCount(2);
 
 
     // click Finish, assert the URL contains 'checkout-complete'
@@ -141,7 +143,7 @@ test('checkout shows an error when first name is empty', async ({ page }) => {
 
 
 
-test('checkout shows an error when first name is empty (Written in anoter way)', async ({ page }) => {
+test('checkout shows an error when first name is empty (Written in another way)', async ({ page }) => {
     await goToCheckoutWithTwoItems(page);
 
     // fill first name, last name, postal code, click Continue
