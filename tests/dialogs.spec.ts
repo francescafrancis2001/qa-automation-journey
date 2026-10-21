@@ -2,13 +2,24 @@ import { test, expect } from '@playwright/test';
 
 test('accept a JS alert', async ({ page }) => {
     await page.goto('https://the-internet.herokuapp.com/javascript_alerts');
-    // page.once('dialog', async dialog => {
-    //     expect(dialog.type()).toBe('alert');
-    //     await dialog.accept();
-    // });
+    page.once('dialog', async dialog => {
+        expect(dialog.type()).toBe('alert');
+        await dialog.accept();               //if i remove page.once('dialog',....) then i run the test, the test is passed because playwright passes the test because an alert has only one button, OK, so auto-dismissing it gives the same result as accepting it, and the page still shows “You successfully clicked an alert"
+    });
     await page.getByRole('button', { name: 'Click for JS Alert' }).click();
     await expect(page.locator('#result')).toHaveText('You successfully clicked an alert');
 });
+
+
+test('accept a JS confirm', async ({ page }) => {
+    await page.goto('https://the-internet.herokuapp.com/javascript_alerts');
+    page.once('dialog', async dialog => {
+        await dialog.accept();   //if i remove page.once('dialog',....) then i run the test, the test is failed because in this popup, i have 2 buttons 'ok' and 'cancel'. With no dialog handler, Playwright auto-dismissed the confirm, which presses Cancel, so the page showed a different result than the test expected.
+    });
+    await page.getByRole('button', { name: 'Click for JS Confirm' }).click();
+    await expect(page.locator('#result')).toHaveText('You clicked: Ok');
+});
+
 
 test('dismiss a JS confirm', async ({ page }) => {
     await page.goto('https://the-internet.herokuapp.com/javascript_alerts');
@@ -24,7 +35,6 @@ test('accept and fill JS Prompt', async ({ page }) => {
 
     page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('prompt');
-        //console.log(dialog.message());          // optional: prints the prompt's text
         await dialog.accept('Playwright');      // types the text, then clicks OK
     });
 
