@@ -102,6 +102,7 @@ test('complete a purchase (another written type)', async ({ page }) => {
 
 test('checkout shows an error when first name is empty', async ({ page }) => {
     await login(page);
+
     // await page.goto('https://www.saucedemo.com');
     // await page.locator('[data-test="username"]').fill('standard_user');
     // await page.locator('[data-test="password"]').fill('secret_sauce');
@@ -119,7 +120,9 @@ test('checkout shows an error when first name is empty', async ({ page }) => {
 
     await page.locator('[data-test="shopping-cart-link"]').click();
     await expect(page).toHaveURL(/cart/);
+   // await page.screenshot({ path: 'screenshots/cart.png', fullPage: true }); if i want to take a screenshots
     await expect(page.locator('[data-test="inventory-item"]')).toHaveCount(2);
+
 
 
     // click Checkout, assert the URL contains 'checkout-step-one'
