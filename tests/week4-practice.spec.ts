@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
 
+// Promise.all starts listening for the new tab at the same moment as the click, so the tab can’t open before the listener is ready. Without it, the test can miss the tab event and time out, or have no newPage to work with, even though the click still opens the tab.
+
 test('remove checkbox, then handle a confirm dialog', async ({ page }) => {
     await page.goto('https://the-internet.herokuapp.com/dynamic_controls');
     await page.getByRole('button', { name: 'Remove' }).click();
