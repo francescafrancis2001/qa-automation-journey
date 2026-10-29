@@ -21,11 +21,14 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Cart', () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto('https://www.saucedemo.com');
-        await page.locator('[data-test="username"]').fill('standard_user');
-        await page.locator('[data-test="password"]').fill('secret_sauce');
+        await page.goto('/');            // opens https://www.saucedemo.com/   because in config the base URL is saucedemo  - await page.goto('/inventory.html');
+        await page.locator('[data-test="username"]').fill(process.env.APP_USER!);
+        await page.locator('[data-test="password"]').fill(process.env.APP_PASSWORD!);
         await page.locator('[data-test="login-button"]').click();
         await expect(page).toHaveURL(/inventory/);
+
+
+
     });
 
     test('add one item', async ({ page }) => {          // test.skip('add one item', async ({ page }) => {...}   this test will skipped when i run it

@@ -2,9 +2,10 @@
 import { test, expect, Page } from '@playwright/test';
 
 async function login(page: Page) {
-    await page.goto('https://www.saucedemo.com');
-    await page.locator('[data-test="username"]').fill('standard_user');
-    await page.locator('[data-test="password"]').fill('secret_sauce');
+    await page.goto('/');
+    await page.locator('[data-test="username"]').fill(process.env.APP_USER!);
+    await page.locator('[data-test="password"]').fill(process.env.APP_PASSWORD!);
+
     await page.locator('[data-test="login-button"]').click();
     await expect(page).toHaveURL(/inventory/);
 }
@@ -72,7 +73,7 @@ test('complete a purchase', async ({ page }) => {
 // write the same test in another method
 
 
-test('complete a purchase (another written type)', async ({ page }) => {
+test('complete a purchase (another written type) @smoke', async ({ page }) => {
     await goToCheckoutWithTwoItems(page);
 
 
@@ -120,7 +121,7 @@ test('checkout shows an error when first name is empty', async ({ page }) => {
 
     await page.locator('[data-test="shopping-cart-link"]').click();
     await expect(page).toHaveURL(/cart/);
-   // await page.screenshot({ path: 'screenshots/cart.png', fullPage: true }); if i want to take a screenshots
+    // await page.screenshot({ path: 'screenshots/cart.png', fullPage: true }); if i want to take a screenshots
     await expect(page.locator('[data-test="inventory-item"]')).toHaveCount(2);
 
 

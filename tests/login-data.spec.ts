@@ -33,13 +33,13 @@ const loginCases: LoginCase[] = JSON.parse(
 
 for (const c of loginCases) {
     test(`login fails: ${c.name}`, async ({ page }) => {
-        await page.goto('https://www.saucedemo.com');
+        await page.goto('/');
         await page.locator('[data-test="username"]').fill(c.username);
         await page.locator('[data-test="password"]').fill(c.password);
         await page.locator('[data-test="login-button"]').click();
 
         await expect(page.locator('[data-test="error"]')).toContainText(c.error);   //this text contain inside the retruning sentence, ex: "do not match" is contain inside "Epic sadface: Username and password do not match any user in this service"
-        await expect(page).toHaveURL('https://www.saucedemo.com/');
+        await expect(page).toHaveURL('/');
     });
 }
 
