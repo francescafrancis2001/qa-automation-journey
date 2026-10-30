@@ -12,12 +12,16 @@ type MyFixtures = {
 
 
 export const test = base.extend<MyFixtures>({
+    // user: async ({ }, use) => {        //i write the credential manually
+    //     await use({ username: 'standard_user', password: 'secret_sauce' });
+    // },
     user: async ({ }, use) => {
-        await use({ username: 'standard_user', password: 'secret_sauce' });
+        await use({ username: process.env.APP_USER!, password: process.env.APP_PASSWORD! });   // i get the credentails deoend on test environment dev or staging
     },
 
+
     loggedInPage: async ({ page, user }, use) => {
-        await page.goto('https://www.saucedemo.com');
+        await page.goto('/')
         await page.locator('[data-test="username"]').fill(user.username);
         await page.locator('[data-test="password"]').fill(user.password);
         await page.locator('[data-test="login-button"]').click();
