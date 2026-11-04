@@ -15,7 +15,7 @@ export class LoginPage {
         this.errorMessage = page.locator('[data-test="error"]');
     }
 
-    async goto() {
+    async gotoPage() {
         await this.page.goto('https://www.saucedemo.com/');
     }
 

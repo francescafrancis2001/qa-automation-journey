@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from '../pages/LoginPage';
 
 
 // READ THE DATA FROM A JSON FILE 
