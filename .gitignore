@@ -1,4 +1,4 @@
-node_modules
+node_modules/
 
 # Playwright
 /test-results/
@@ -10,3 +10,5 @@ downloads
 screenshots
 .env
 .env.*
+allure-results/
+allure-report/
