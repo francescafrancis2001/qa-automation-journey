@@ -1,5 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
+import { InventoryPage } from '../pages/InventoryPage';
+import users from '../test-data/users.json';
+import loginErrors from '../test-data/loginErrors.json';
 
 test.describe('Login', () => {
     let loginPage: LoginPage;
@@ -9,18 +12,16 @@ test.describe('Login', () => {
         await loginPage.gotoPage();
     });
 
-    test('valid user can log in', async ({ page }) => {
-        await loginPage.login('standard_user', 'secret_sauce');
-        await expect(page).toHaveURL(/inventory/);
+    test('valid user can log in @smoke', async ({ page }) => {
+        const inventoryPage = new InventoryPage(page);
+        await loginPage.login(users.standard.username, users.standard.password);
+        await expect(inventoryPage.title).toHaveText('Products');
     });
 
-    test('wrong password shows an error', async () => {
-        await loginPage.login('standard_user', 'wrong');
-        await expect(loginPage.errorMessage).toBeVisible();
-    });
-
-    test('empty username shows an error', async () => {
-        await loginPage.login('', 'secret_sauce');
-        await expect(loginPage.errorMessage).toContainText('Username is required');
-    });
+    for (const data of loginErrors) {
+        test(`shows error for ${data.name} @regression`, async () => {
+            await loginPage.login(data.username, data.password);
+            await expect(loginPage.errorMessage).toContainText(data.error);
+        });
+    }
 });
