@@ -1,19 +1,3 @@
-
-
-// question 1
-function getStatus(product) {
-    if (inStock == true) {
-        return '${products.name}: In stock';
-    }
-    else {
-        return '${products.name}: Out of stock';
-    }
-}
-
-getStatus(true);
-getStatus(false);
-
-
 const products = [
     { name: "Backpack", price: 29.99, inStock: true },
     { name: "Bike Light", price: 9.99, inStock: false },
@@ -21,40 +5,39 @@ const products = [
     { name: "Jacket", price: 49.99, inStock: true },
 ];
 
-// question 2
+function getStatus(product) {
+    if (product.inStock) {
+        return `${product.name}: In stock`;
+    } else {
+        return `${product.name}: Out of stock`;
+    }
+}
 
 function getAffordable(products, budget) {
-    if (inStock == true && price <= $badget) {
-        return '${products.name}';
-
-    } else {
-        return '${products.name}';
+    const names = [];
+    for (const product of products) {
+        if (product.inStock && product.price <= budget) {
+            names.push(product.name);
+        }
     }
-
+    return names;
 }
 
-// question 3
-
-for (const status of products) {
-    return '${products.inStock}';
+for (const product of products) {
+    console.log(getStatus(product));
 }
 
+console.log(getAffordable(products, 20));        // [ 'T-Shirt' ]
 
-// question 4
-getAffordable(products, 20)
-
-
-// question 5
 async function fakeLoad() {
-    console.log("Start");
-    const result = await waitonesecond();
-    console.log("loaded");
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    return "loaded";
 }
-return fakeLoad;
 
-// question 6
-
-function returnlastname() {
-    return '${products.name}';
+async function main() {
+    const result = await fakeLoad();
+    console.log(result);                           // prints after 1 second
 }
-products(products.legth - 1).name
+main();
+
+console.log(products[products.length - 1].name); // Jacket
