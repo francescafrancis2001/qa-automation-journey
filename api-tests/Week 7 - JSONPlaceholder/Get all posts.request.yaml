@@ -1,0 +1,47 @@
+$kind: http-request
+url: "{{baseUrl}}/posts"
+method: GET
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", () => {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response is an array of 100 posts", () => {
+          const json = pm.response.json();
+          pm.expect(json).to.be.an("array");
+          pm.expect(json).to.have.lengthOf(100);
+      });
+
+      pm.test("Every post has id, title and userId", () => {
+          const json = pm.response.json();
+          json.forEach(post => {
+              pm.expect(post).to.have.property("id");
+              pm.expect(post).to.have.property("title");
+              pm.expect(post).to.have.property("userId");
+          });
+      });
+
+      const postSchema = {
+          type: "object",
+          required: ["userId", "id", "title", "body"],
+          properties: {
+              userId: { type: "integer" },
+              id: { type: "integer" },
+              title: { type: "string" },
+              body: { type: "string" }
+          }
+      };
+
+      pm.test("List matches the schema", () => {
+          pm.response.to.have.jsonSchema({
+              type: "array",
+              items: postSchema
+          });
+      });
+
+      const posts = pm.response.json();
+      pm.environment.set("firstPostId", posts[0].id);
+    language: text/javascript
+order: 2000

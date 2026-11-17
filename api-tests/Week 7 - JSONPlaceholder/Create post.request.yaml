@@ -1,0 +1,35 @@
+$kind: http-request
+url: "{{baseUrl}}/posts"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "title": "My post",
+      "body": "Hello from Postman",
+      "userId": 1
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 201 Created", () => {
+          pm.response.to.have.status(201);
+      });
+
+      pm.test("Response contains the data we sent", () => {
+          const json = pm.response.json();
+          pm.expect(json.title).to.eql("My post");
+          pm.expect(json.userId).to.eql(1);
+      });
+
+      pm.test("A new id was generated", () => {
+          const json = pm.response.json();
+          pm.expect(json).to.have.property("id");
+      });
+
+      const created = pm.response.json();
+      pm.environment.set("createdId", created.id);
+    language: text/javascript
+order: 3000

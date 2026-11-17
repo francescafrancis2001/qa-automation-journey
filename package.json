@@ -9,7 +9,9 @@
     "regression": "playwright test --grep @regression --project=chromium",
     "report": "playwright show-report",
     "api": "newman run api-tests/jsonplaceholder.collection.json -e api-tests/jsonplaceholder.environment.json",
-    "api:report": "newman run api-tests/jsonplaceholder.collection.json -e api-tests/jsonplaceholder.environment.json -r cli,htmlextra --reporter-htmlextra-export reports/api-report.html"
+    "api:report": "newman run api-tests/jsonplaceholder.collection.json -e api-tests/jsonplaceholder.environment.json -r cli,htmlextra --reporter-htmlextra-export reports/api-report.html",
+    "api:dummyjson": "newman run api-tests/dummyjson.collection.json -e api-tests/dummyjson.environment.json",
+    "api:dummyjson:data": "newman run api-tests/dummyjson.collection.json -e api-tests/dummyjson.environment.json -d api-tests/search-words.json"
   },
   "keywords": [],
   "author": "",
