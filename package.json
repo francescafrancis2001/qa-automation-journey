@@ -7,7 +7,9 @@
     "test": "playwright test --project=chromium",
     "smoke": "playwright test --grep @smoke --project=chromium",
     "regression": "playwright test --grep @regression --project=chromium",
-    "report": "playwright show-report"
+    "report": "playwright show-report",
+    "api": "newman run api-tests/jsonplaceholder.collection.json -e api-tests/jsonplaceholder.environment.json",
+    "api:report": "newman run api-tests/jsonplaceholder.collection.json -e api-tests/jsonplaceholder.environment.json -r cli,htmlextra --reporter-htmlextra-export reports/api-report.html"
   },
   "keywords": [],
   "author": "",

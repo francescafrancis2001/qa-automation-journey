@@ -1,0 +1,350 @@
+{
+  "info": {
+    "name": "Week 7 - JSONPlaceholder",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get one post",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response time is under 1000 ms\", () => {",
+              "    pm.expect(pm.response.responseTime).to.be.below(1000);",
+              "});",
+              "",
+              "pm.test(\"Content-Type is JSON\", () => {",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "",
+              "pm.test(\"Body has the expected fields\", () => {",
+              "    const json = pm.response.json();",
+              "    pm.expect(json).to.have.property(\"id\");",
+              "    pm.expect(json).to.have.property(\"title\");",
+              "    pm.expect(json).to.have.property(\"userId\");",
+              "});",
+              "",
+              "pm.test(\"Post id matches the postId variable\", () => {",
+              "    const expectedId = Number(pm.environment.get(\"postId\"));",
+              "    pm.expect(pm.response.json().id).to.eql(expectedId);",
+              "});",
+              "",
+              "const postSchema = {",
+              "    type: \"object\",",
+              "    required: [\"userId\", \"id\", \"title\", \"body\"],",
+              "    properties: {",
+              "        userId: { type: \"integer\" },",
+              "        id: { type: \"integer\" },",
+              "        title: { type: \"string\" },",
+              "        body: { type: \"string\" }",
+              "    }",
+              "};",
+              "",
+              "pm.test(\"Response matches the post schema\", () => {",
+              "    pm.response.to.have.jsonSchema(postSchema);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/posts/{{postId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "posts",
+            "{{postId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get all posts",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is an array of 100 posts\", () => {",
+              "    const json = pm.response.json();",
+              "    pm.expect(json).to.be.an(\"array\");",
+              "    pm.expect(json).to.have.lengthOf(100);",
+              "});",
+              "",
+              "pm.test(\"Every post has id, title and userId\", () => {",
+              "    const json = pm.response.json();",
+              "    json.forEach(post => {",
+              "        pm.expect(post).to.have.property(\"id\");",
+              "        pm.expect(post).to.have.property(\"title\");",
+              "        pm.expect(post).to.have.property(\"userId\");",
+              "    });",
+              "});",
+              "",
+              "const postSchema = {",
+              "    type: \"object\",",
+              "    required: [\"userId\", \"id\", \"title\", \"body\"],",
+              "    properties: {",
+              "        userId: { type: \"integer\" },",
+              "        id: { type: \"integer\" },",
+              "        title: { type: \"string\" },",
+              "        body: { type: \"string\" }",
+              "    }",
+              "};",
+              "",
+              "pm.test(\"List matches the schema\", () => {",
+              "    pm.response.to.have.jsonSchema({",
+              "        type: \"array\",",
+              "        items: postSchema",
+              "    });",
+              "});",
+              "",
+              "const posts = pm.response.json();",
+              "pm.environment.set(\"firstPostId\", posts[0].id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/posts",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "posts"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create post",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201 Created\", () => {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Response contains the data we sent\", () => {",
+              "    const json = pm.response.json();",
+              "    pm.expect(json.title).to.eql(\"My post\");",
+              "    pm.expect(json.userId).to.eql(1);",
+              "});",
+              "",
+              "pm.test(\"A new id was generated\", () => {",
+              "    const json = pm.response.json();",
+              "    pm.expect(json).to.have.property(\"id\");",
+              "});",
+              "",
+              "const created = pm.response.json();",
+              "pm.environment.set(\"createdId\", created.id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/posts",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "posts"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"My post\",\n  \"body\": \"Hello from Postman\",\n  \"userId\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Update post",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Title was updated\", () => {",
+              "    pm.expect(pm.response.json().title).to.eql(\"Updated title\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/posts/{{postId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "posts",
+            "{{postId}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": 1,\n  \"title\": \"Updated title\",\n  \"body\": \"Updated by Postman\",\n  \"userId\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Delete post",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              ""
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/posts/{{postId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "posts",
+            "{{postId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get missing post",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404 Not Found\", () => {",
+              "    pm.response.to.have.status(404);",
+              "});",
+              ""
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/posts/9999",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "posts",
+            "9999"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get posts by user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"All posts belong to user 1\", () => {",
+              "    const json = pm.response.json();",
+              "    pm.expect(json).to.have.lengthOf(10);",
+              "    json.forEach(post => {",
+              "        pm.expect(post.userId).to.eql(1);",
+              "    });",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/posts?userId=1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "posts"
+          ],
+          "query": [
+            {
+              "key": "userId",
+              "value": "1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

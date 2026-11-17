@@ -12,3 +12,4 @@ screenshots
 .env.*
 allure-results/
 allure-report/
+reports/
