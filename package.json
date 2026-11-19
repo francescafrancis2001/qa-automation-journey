@@ -11,7 +11,10 @@
     "api": "newman run api-tests/jsonplaceholder.collection.json -e api-tests/jsonplaceholder.environment.json",
     "api:report": "newman run api-tests/jsonplaceholder.collection.json -e api-tests/jsonplaceholder.environment.json -r cli,htmlextra --reporter-htmlextra-export reports/api-report.html",
     "api:dummyjson": "newman run api-tests/dummyjson.collection.json -e api-tests/dummyjson.environment.json",
-    "api:dummyjson:data": "newman run api-tests/dummyjson.collection.json -e api-tests/dummyjson.environment.json -d api-tests/search-words.json"
+    "api:dummyjson:data": "newman run api-tests/dummyjson.collection.json -e api-tests/dummyjson.environment.json -d api-tests/search-words.json",
+    "api:pw": "playwright test tests/api --project=chromium",
+    "axios:demo": "node scripts/axios-demo.mjs",
+    "axios:auth": "node scripts/axios-auth.mjs"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +24,7 @@
     "@playwright/test": "^1.64.0",
     "@types/node": "^26.6.4",
     "allure-playwright": "^3.14.0",
+    "axios": "^1.21.1",
     "dotenv": "^18.0.9",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
