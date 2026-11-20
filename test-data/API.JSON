@@ -1,0 +1,31 @@
+{
+    "Success (200)": {
+        "id": 5,
+        "title": "Hello world",
+        "status": "published"
+    },
+    "List with pagination (200)": [
+        {
+            "id": 1,
+            "title": "First"
+        },
+        {
+            "id": 2,
+            "title": "Second"
+        }
+    ],
+    "links": {
+        "next": "https://api.mysite.com/articles?page=2"
+    },
+    "meta": {
+        "current_page": 1,
+        "total": 40
+    },
+    "message": "The title field is required.",
+    "Validation errors (422)": {
+        "title": [
+            "The title field is required."
+        ]
+    },
+    "Not logged in (401) Message": "Unauthenticated."
+}
