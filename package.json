@@ -14,7 +14,8 @@
     "api:dummyjson:data": "newman run api-tests/dummyjson.collection.json -e api-tests/dummyjson.environment.json -d api-tests/search-words.json",
     "api:pw": "playwright test tests/api --project=chromium",
     "axios:demo": "node scripts/axios-demo.mjs",
-    "axios:auth": "node scripts/axios-auth.mjs"
+    "axios:auth": "node scripts/axios-auth.mjs",
+    "test:loggedin": "playwright test --project=logged-in"
   },
   "keywords": [],
   "author": "",

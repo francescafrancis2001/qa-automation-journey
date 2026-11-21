@@ -38,6 +38,7 @@ test('full booking CRUD flow @api', async ({ request }) => {
             bookingId = body.bookingid;
             expect(bookingId).toBeTruthy();
             expect(body.booking.firstname).toBe(booking.create.firstname);
+            console.log('bookingId:', bookingId)
 
         });
 
@@ -80,11 +81,10 @@ test('full booking CRUD flow @api', async ({ request }) => {
     } finally {
         // Cleanup: if a step failed before the delete, remove the booking anyway
         if (bookingId && !deleted) {
-            await request.delete(`/booking/${bookingId}`, { headers: authHeaders });
+            const cleanup = await request.delete(`/booking/${bookingId}`, { headers: authHeaders });
+            console.log('cleanup delete status:', cleanup.status());
         }
     }
-
-
 });
 
 test('update without a token is rejected @api', async ({ request }) => {
