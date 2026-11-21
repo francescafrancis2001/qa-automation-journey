@@ -38,6 +38,7 @@ test('full booking CRUD flow @api', async ({ request }) => {
             bookingId = body.bookingid;
             expect(bookingId).toBeTruthy();
             expect(body.booking.firstname).toBe(booking.create.firstname);
+
         });
 
         await test.step('Read it back and check it was saved', async () => {
@@ -83,15 +84,31 @@ test('full booking CRUD flow @api', async ({ request }) => {
         }
     }
 
-    // test('update without a token is rejected @api', async ({ request }) => {
-    //     const response = await request.put('/booking/1', { data: booking.update });
-    //     expect(response.status()).toBe(403);
-    // });
 
-    // test('getting a booking that does not exist returns 404 @api', async ({ request }) => {
-    //     const response = await request.get('/booking/99999999');
-    //     expect(response.status()).toBe(404);
-    //     expect(await response.text()).toBe('Not Found');
-    // });
+});
 
+test('update without a token is rejected @api', async ({ request }) => {
+    const response = await request.put('/booking/1', { data: booking.update });
+    expect(response.status()).toBe(403);
+});
+
+test('getting a booking that does not exist returns 404 @api', async ({ request }) => {
+    const response = await request.get('/booking/99999999');
+    expect(response.status()).toBe(404);
+    expect(await response.text()).toBe('Not Found');
+});
+
+test('login with bad credentials @api', async ({ request }) => {
+    const response = await request.post('/auth', {
+        data: { username: 'admin', password: 'wrong' },
+    });
+
+    console.log('status:', response.status());
+    console.log('body:', await response.text());
+
+    expect(response.status()).toBe(200);
+
+    const body = await response.json();
+    expect(body).not.toHaveProperty('token');
+    expect(body).toHaveProperty('reason');
 });
