@@ -1,0 +1,22 @@
+[
+    {
+        "name": "missing firstname",
+        "field": "firstname",
+        "expectedStatus": 500
+    },
+    {
+        "name": "missing lastname",
+        "field": "lastname",
+        "expectedStatus": 500
+    },
+    {
+        "name": "missing totalprice",
+        "field": "totalprice",
+        "expectedStatus": 500
+    },
+    {
+        "name": "missing bookingdates",
+        "field": "bookingdates",
+        "expectedStatus": 500
+    }
+]

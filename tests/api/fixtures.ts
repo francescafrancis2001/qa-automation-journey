@@ -1,10 +1,12 @@
 import { test as base } from '@playwright/test';
 import type { APIRequestContext } from '@playwright/test';
 
-type Fixtures = { authApi: APIRequestContext };
+type WorkerFixtures = { authApi: APIRequestContext };
 
-export const test = base.extend<Fixtures>({
-    authApi: async ({ playwright }, use) => {
+export const test = base.extend<{}, WorkerFixtures>({
+
+
+    authApi: [async ({ playwright }, use) => {
         // 1. log in with a temporary client
         const anonymous = await playwright.request.newContext({
             baseURL: 'https://dummyjson.com',
@@ -24,6 +26,8 @@ export const test = base.extend<Fixtures>({
         await use(api);        // the test runs here
         await api.dispose();   // cleanup afterwards
     },
+    { scope: 'worker' }],
+
 });
 
 export { expect } from '@playwright/test';

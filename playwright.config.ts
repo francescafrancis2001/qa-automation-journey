@@ -55,6 +55,24 @@ export default defineConfig({
   /* Configure projects for major browsers */
 
 
+  const browserIgnore = ['**/*.setup.ts', '**/*.loggedin.spec.ts', '**/api/**'];
+
+  projects: [
+    { name: 'setup', testMatch: '**/*.setup.ts' },
+    { name: 'api', testMatch: '**/api/**/*.spec.ts' },
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] }, testIgnore: browserIgnore },
+    { name: 'firefox', use: { ...devices['Desktop Firefox'] }, testIgnore: browserIgnore },
+    { name: 'webkit', use: { ...devices['Desktop Safari'] }, testIgnore: browserIgnore },
+    // keep your 'chrome' project here, also with testIgnore: browserIgnore
+    {
+      name: 'logged-in',
+      testMatch: '**/*.loggedin.spec.ts',
+      use: { ...devices['Desktop Chrome'], storageState: 'playwright/.auth/standard.json' },
+      dependencies: ['setup'],
+    },
+  ],
+
+
   projects: [
     {
       name: 'setup',

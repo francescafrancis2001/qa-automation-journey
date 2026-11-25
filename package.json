@@ -15,7 +15,8 @@
     "api:pw": "playwright test tests/api --project=chromium",
     "axios:demo": "node scripts/axios-demo.mjs",
     "axios:auth": "node scripts/axios-auth.mjs",
-    "test:loggedin": "playwright test --project=logged-in"
+    "test:loggedin": "playwright test --project=logged-in",
+    "api:booking": "playwright test tests/api/booking --project=api"
   },
   "keywords": [],
   "author": "",
