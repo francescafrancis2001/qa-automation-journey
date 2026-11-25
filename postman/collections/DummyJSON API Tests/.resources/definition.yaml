@@ -1,0 +1,28 @@
+$kind: collection
+variables:
+  - key: term
+    value: ""
+    disabled: false
+  - key: bearer_token_11y0
+    secret: true
+    disabled: false
+    source:
+      provider: postman
+      postman:
+        type: cloud
+        secretId: 499d538c-c043-412d-ab2d-55d9ed200b88
+        vaultId: f1a3e2b4-76a1-4c15-aeac-8fc58b5f097d
+scripts:
+  - type: http:afterResponse
+    code: "pm.test(\"Response time is under 2000ms\", () => {\r
+
+      pm.expect(pm.response.responseTime).to.be.below(2000);\r
+
+      })"
+    language: text/javascript
+auth:
+  - id: d36a8005-5cc0-499b-bacd-7b9dffa28b6d
+    type: bearer
+    name: Bearer Token
+    credentials:
+      token: "{{token}}"

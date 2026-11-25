@@ -51,24 +51,24 @@ test('full booking CRUD flow @api @smoke', async ({ authedBookingApi: api }) => 
         }
     }
 
-    test('a created booking appears in the filtered list @api', async ({ authedBookingApi: api }) => {
-        const uniqueName = `Test${Date.now()}`;
-        let bookingId = 0;
+});
 
-        try {
-            const created = await api.createBooking({ ...booking.create, lastname: uniqueName });
-            bookingId = (await created.json()).bookingid;
+test('a created booking appears in the filtered list @api', async ({ authedBookingApi: api }) => {
+    const uniqueName = `Test${Date.now()}`;
+    let bookingId = 0;
 
-            const list = await api.listBookings({ lastname: uniqueName });
-            expect(list.status()).toBe(200);
+    try {
+        const created = await api.createBooking({ ...booking.create, lastname: uniqueName });
+        bookingId = (await created.json()).bookingid;
 
-            const ids = (await list.json()).map((item: { bookingid: number }) => item.bookingid);
-            expect(ids).toContain(bookingId);
+        const list = await api.listBookings({ lastname: uniqueName });
+        expect(list.status()).toBe(200);
 
-        } finally {
+        const ids = (await list.json()).map((item: { bookingid: number }) => item.bookingid);
+        expect(ids).toContain(bookingId);
 
-            if (bookingId) await api.deleteBooking(bookingId);
-        }
-    });
+    } finally {
 
+        if (bookingId) await api.deleteBooking(bookingId);
+    }
 });

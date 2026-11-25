@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{baseUrl}}/auth/me"
+method: GET
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 200\", () => {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"username equals the environment variable\", () => {\r
+
+      \    pm.expect(pm.response.json().username).to.eql(pm.environment.get(\"username\"));\r
+
+      });\r
+
+      \r\n"
+    language: text/javascript
+order: 2000

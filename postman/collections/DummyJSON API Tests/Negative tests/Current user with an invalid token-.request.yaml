@@ -1,0 +1,28 @@
+$kind: http-request
+name: Current user with an invalid token.
+url: "{{baseUrl}}/auth/me"
+method: GET
+headers:
+  Authorization: "{{bearer_token_11y0}}"
+auth:
+  type: noauth
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 401 Unauthorized\", () => {\r
+
+      \    pm.response.to.have.status(401);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response has an error message\", () => {\r
+
+      \    pm.expect(pm.response.json().message).to.be.a(\"string\");\r
+
+      });"
+    language: text/javascript
+  - type: beforeRequest
+    code: ""
+    language: text/javascript
+order: 4000

@@ -1,0 +1,6 @@
+$kind: http-request
+url: https://restful-booker.herokuapp.com/booking/301
+method: GET
+settings:
+  disabledSystemHeaders: []
+order: 8000

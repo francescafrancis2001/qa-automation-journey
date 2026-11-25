@@ -1,0 +1,43 @@
+$kind: http-request
+url: "{{baseUrl}}/auth/login"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"username\": \"{{username}}\",\r
+
+    \     \"password\": \"{{password}}\"\r
+
+    \r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 200\", () => {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      const loginBody = pm.response.json();\r
+
+      \r
+
+      pm.test(\"Response has an access token\", () => {\r
+
+      \    pm.expect(loginBody).to.have.property(\"accessToken\");\r
+
+      \    pm.expect(loginBody.accessToken).to.be.a(\"string\");\r
+
+      \    pm.expect(loginBody.accessToken.length).to.be.above(10);\r
+
+      });\r
+
+      \r
+
+      pm.environment.set(\"token\", loginBody.accessToken);"
+    language: text/javascript
+order: 1000

@@ -1,0 +1,21 @@
+type: dataset
+name: DummyJSON API Tests – search-words
+id: 095d0afd-5fe0-4c21-af47-e910bc995d64
+data_dir: .resources
+sources:
+  - from: embedded_datasource
+    datasource:
+      name: source_dummyjson_api_tests_search_words
+      id: 713af7a1-d5f7-44c7-b10b-742ac40ff262
+      dsKey: source_dummyjson_api_tests_search_words
+      format: json
+      source_type: static
+      location:
+        type: local_filesystem
+        value: .resources/dummyjson-api-tests-search-words.json
+views:
+  - from: embedded_view
+    view:
+      name: search-words
+      id: 39fe567a-d103-4a1f-a2ea-084d7db881ba
+      query: SELECT * FROM source_dummyjson_api_tests_search_words

@@ -1,0 +1,14 @@
+# Use this workspace to collaborate
+workspace:
+  id: 6668a006-09fc-44e1-8885-b8a5dcef9b71
+
+localResources:
+  collections:
+    - ../api-tests/Week 7 - JSONPlaceholder
+  environments: []
+  specs: []
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+
+cloudResources:
+  collections: {}

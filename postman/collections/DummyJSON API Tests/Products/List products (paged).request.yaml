@@ -1,0 +1,83 @@
+$kind: http-request
+url: "{{baseUrl}}/products?limit=5&skip=0"
+method: GET
+queryParams:
+  limit: "5"
+  skip: "0"
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 200\", () => {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      const body = pm.response.json();\r
+
+      \r
+
+      pm.test(\"Response has products, total, skip and limit\", () => {\r
+
+      \    pm.expect(body).to.have.property(\"products\");\r
+
+      \    pm.expect(body).to.have.property(\"total\");\r
+
+      \    pm.expect(body).to.have.property(\"skip\");\r
+
+      \    pm.expect(body).to.have.property(\"limit\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Paging values are correct\", () => {\r
+
+      \    pm.expect(body.products).to.be.an(\"array\");\r
+
+      \    pm.expect(body.products).to.have.lengthOf(5);\r
+
+      \    pm.expect(body.limit).to.eql(5);\r
+
+      \    pm.expect(body.skip).to.eql(0);\r
+
+      \    pm.expect(body.total).to.be.a(\"number\");\r
+
+      });\r
+
+      \r
+
+      const productSchema = {\r
+
+      \    type: \"object\",\r
+
+      \    required: [\"id\", \"title\", \"price\"],\r
+
+      \    properties: {\r
+
+      \        id: { type: \"integer\" },\r
+
+      \        title: { type: \"string\" },\r
+
+      \        price: { type: \"number\" }\r
+
+      \    }\r
+
+      };\r
+
+      \r
+
+      pm.test(\"Every product matches the product schema\", () => {\r
+
+      \    pm.response.to.have.jsonSchema({\r
+
+      \        type: \"object\",\r
+
+      \        properties: { products: { type: \"array\", items: productSchema } }\r
+
+      \    });\r
+
+      });"
+    language: text/javascript
+order: 1000

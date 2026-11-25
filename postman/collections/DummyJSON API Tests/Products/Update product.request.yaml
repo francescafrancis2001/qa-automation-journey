@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{baseUrl}}/products/1"
+method: PUT
+body:
+  type: json
+  content: '{"title": "Updated title"}'
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 200\", () => {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Title was updated\", () => {\r
+
+      \    pm.expect(pm.response.json().title).to.eql(\"Updated title\");\r
+
+      });"
+    language: text/javascript
+order: 5000

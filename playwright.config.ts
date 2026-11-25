@@ -10,60 +10,35 @@ if (!fs.existsSync(envFile)) {
 }
 dotenv.config({ path: envFile });
 
+// Files that the browser projects must NOT run
+const browserIgnore = ['**/*.setup.ts', '**/*.loggedin.spec.ts', '**/api/**'];
+
 export default defineConfig({
   testDir: './tests',
-  // ...the rest stays as it is
-  use: {
-    /* Base URL to use in actions like `await page.goto('')`. */
-    // baseURL: 'http://localhost:3000',
-    //baseURL: 'https://www.saucedemo.com',    // await page.goto('/');       await page.goto('/inventory.html');
-    baseURL: process.env.BASE_URL,
-
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
-    trace: 'retain-on-failure',
-    navigationTimeout: 60000,
-
-  },
-  // ...
-
-  /**
-   * See https://playwright.dev/docs/test-configuration.
-   */
-
-
-  /* Run tests in files in parallel */
   timeout: 90000,
   fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ['list'],
     ['html', { open: 'never' }],
     ['allure-playwright'],
   ],
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
-
-
-  /* Configure projects for major browsers */
-
-
-  const browserIgnore = ['**/*.setup.ts', '**/*.loggedin.spec.ts', '**/api/**'];
-
+  use: {
+    baseURL: process.env.BASE_URL,
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+    trace: 'retain-on-failure',
+    navigationTimeout: 60000,
+  },
   projects: [
     { name: 'setup', testMatch: '**/*.setup.ts' },
     { name: 'api', testMatch: '**/api/**/*.spec.ts' },
     { name: 'chromium', use: { ...devices['Desktop Chrome'] }, testIgnore: browserIgnore },
     { name: 'firefox', use: { ...devices['Desktop Firefox'] }, testIgnore: browserIgnore },
     { name: 'webkit', use: { ...devices['Desktop Safari'] }, testIgnore: browserIgnore },
-    // keep your 'chrome' project here, also with testIgnore: browserIgnore
+    { name: 'chrome', use: { ...devices['Desktop Chrome'], channel: 'chrome' }, testIgnore: browserIgnore },
     {
       name: 'logged-in',
       testMatch: '**/*.loggedin.spec.ts',
@@ -71,72 +46,4 @@ export default defineConfig({
       dependencies: ['setup'],
     },
   ],
-
-
-  projects: [
-    {
-      name: 'setup',
-      testMatch: /.*\.setup\.ts/,
-    },
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-      testIgnore: [/.*\.setup\.ts/, /.*\.loggedin\.spec\.ts/],
-    },
-    {
-      name: 'logged-in',
-      testMatch: /.*\.loggedin\.spec\.ts/,
-      use: {
-        ...devices['Desktop Chrome'],
-        storageState: 'playwright/.auth/standard.json',
-      },
-      dependencies: ['setup'],
-    },
-    // {
-    //   name: 'chromium',
-    //   use: { ...devices['Desktop Chrome'] },
-    // },
-
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-
-    {
-      name: 'chrome',
-      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    }
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
-  ],
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
 });

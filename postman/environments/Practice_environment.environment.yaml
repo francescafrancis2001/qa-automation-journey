@@ -1,0 +1,6 @@
+name: Practice_environment
+values:
+  - key: baseUrl
+    value: 'https://jsonplaceholder.typicode.com'
+  - key: postId
+    value: '1'

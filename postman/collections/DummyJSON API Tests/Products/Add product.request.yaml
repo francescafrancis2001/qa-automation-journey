@@ -1,0 +1,37 @@
+$kind: http-request
+url: "{{baseUrl}}/products/add"
+method: POST
+body:
+  type: json
+  content: '{"title": "My test product", "price": 99}'
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 201\", () => {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      });\r
+
+      \r
+
+      const added = pm.response.json();\r
+
+      \r
+
+      pm.test(\"Response contains the data we sent\", () => {\r
+
+      \    pm.expect(added.title).to.eql(\"My test product\");\r
+
+      \    pm.expect(added.price).to.eql(99);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"A new id was generated\", () => {\r
+
+      \    pm.expect(added).to.have.property(\"id\");\r
+
+      });"
+    language: text/javascript
+order: 4000

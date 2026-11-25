@@ -1,0 +1,48 @@
+$kind: http-request
+url: "{{baseUrl}}/products/1"
+method: GET
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"Status code is 200\", () => {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"id is 1\", () => {\r
+
+      \    pm.expect(pm.response.json().id).to.eql(1);\r
+
+      });\r
+
+      \r
+
+      const productSchema = {\r
+
+      \    type: \"object\",\r
+
+      \    required: [\"id\", \"title\", \"price\"],\r
+
+      \    properties: {\r
+
+      \        id: { type: \"integer\" },\r
+
+      \        title: { type: \"string\" },\r
+
+      \        price: { type: \"number\" }\r
+
+      \    }\r
+
+      };\r
+
+      \r
+
+      pm.test(\"Response matches the product schema\", () => {\r
+
+      \    pm.response.to.have.jsonSchema(productSchema);\r
+
+      });"
+    language: text/javascript
+order: 2000
